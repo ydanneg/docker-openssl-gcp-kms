@@ -1,0 +1,19 @@
+[ca]
+basicConstraints = critical,CA:true,pathlen:0
+keyUsage = cRLSign, keyCertSign
+
+[server]
+basicConstraints = critical,CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+nsCertType = server
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer:always
+extendedKeyUsage = serverAuth
+
+[client]
+basicConstraints = critical,CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+nsCertType = client
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer:always
+extendedKeyUsage = clientAuth

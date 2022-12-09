@@ -1,0 +1,3 @@
+---
+tokens:
+    - key_ring: "projects/<PROJECT>/locations/<LOCATION>/keyRings/<KEY_RING>"

@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  openssl-gcp-kms:
+    build: .
+    container_name: openssl-gcp-kms
+    user: root
+    stdin_open: true
+    tty: true
+    volumes:
+      - "${KMS_GOOGLE_APPLICATION_CREDENTIALS}:/opt/google-kms/google-credentials.json:ro"
+      - "${KMS_PKCS11_CONFIG}:/opt/google-kms/pkcs11-config.yaml:ro"
+      - "./workdir:/root/google-kms"
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /opt/google-kms/google-credentials.json
+      KMS_PKCS11_CONFIG: /opt/google-kms/pkcs11-config.yaml
