@@ -1,11 +1,18 @@
 # Prerequisites
 - docker
 - docker-compose
-- put any required files into `workdir`, they will be available in `/root/google-kms` inside container.
-- configure keyring locations in `pkcs11-config.yaml` 
-- check `.env` file for configuration including credentials
+
+# Configuration
+- configure keyring locations in `pkcs11-config.yaml`. see https://cloud.google.com/kms/docs/reference/pkcs11-openssl#pkcs_11_library_configuration
+- configure your google application credentials file path in `.env` file
+- put any files into `workdir`. it will be mounted as  `/root/google-kms` inside container.
+
+# Running
+- OSX/LINUX: `./run.sh`
+- WINDOWS: `run.bat`
 
 # References
+- https://cloud.google.com/security-key-management
 - https://cloud.google.com/kms/docs/reference/pkcs11-openssl
 - https://www.openssl.org/docs/man3.0/man1/openssl-ecparam.html
 - https://www.openssl.org/docs/man3.0/man1/openssl-req.html
