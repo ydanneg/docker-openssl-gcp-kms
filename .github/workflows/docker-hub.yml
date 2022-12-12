@@ -24,4 +24,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ydanneg/docker-openssl-gcp-kms:latest
+          tags: ydanneg/openssl-gcp-kms:latest
