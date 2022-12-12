@@ -1,8 +1,7 @@
 version: "3"
 services:
   openssl-gcp-kms:
-    build: .
-    container_name: openssl-gcp-kms
+    image: openssl-gcp-kms:latest
     hostname: openssl-kms
     user: root
     stdin_open: true

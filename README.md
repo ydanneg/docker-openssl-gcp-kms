@@ -9,7 +9,7 @@ To run this image you have to provide the following configuration:
 
 
 ## Usage
-
+### Docker
 Example running configured container
 ```
 docker run \
@@ -20,10 +20,10 @@ docker run \
 -it openssl-gcp-kms:latest \
 /bin/bash
 ```
-
+### Docker compose
 Alternately you can run this image using docker-compose:
 * ```git clone https://github.com/ydanneg/docker-openssl-gcp-kms.git```
-* ```cd docker-openssl-gcp-kms```
+* ```cd docker-openssl-gcp-kms/compose```
 * Configure file paths in `.env` file
 * `./run.sh`
 
@@ -59,7 +59,7 @@ openssl req -in ica.csr -noout -pubkey
 ```shell
 openssl x509 -req -in ica.csr -days 1121 -sha384 \
 -engine pkcs11 \
--CA root.pem -CAcreateserial -CAkeyform engine -CAkey pkcs11:object=root-2023-1 \
+-CA root-cert.pem -CAcreateserial -CAkeyform engine -CAkey pkcs11:object=root-2023-1 \
 -extensions ca -extfile extensions.cnf \
 -out ica.pem
 ```
@@ -91,7 +91,7 @@ openssl x509 -req -in server.csr -days 1121 -sha256 \
 openssl x509 -in server.pem -text -noout
 
 # verify chain
-openssl verify -verbose -CAfile <(cat ica.pem root.pem) server.pem 
+openssl verify -verbose -CAfile <(cat ica.pem root-cert.pem) server.pem 
 ```
 
 ## Generate Client SSL certificate and sign it with ICA
@@ -121,5 +121,5 @@ openssl x509 -req -in server.csr -days 1121 -sha256 \
 openssl x509 -in client.pem -text -noout
 
 # verify chain
-openssl verify -verbose -CAfile <(cat ica.pem root.pem) client.pem 
+openssl verify -verbose -CAfile <(cat ica.pem root-cert.pem) client.pem 
 ```
