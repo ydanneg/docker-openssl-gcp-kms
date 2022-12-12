@@ -1,0 +1,3 @@
+---
+tokens:
+    - key_ring: "projects/${KMS_PROJECT}/locations/${KMS_LOCATION}/keyRings/${KMS_KEY_RING}"

@@ -1,19 +1,26 @@
-FROM ubuntu:22.04
-WORKDIR /opt/google-kms
+FROM debian:bullseye-slim AS libkmsp11
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NOWARNINGS="yes"
+RUN apt-get update -qqy && apt-get install -qqy curl
+WORKDIR /usr/lib
+RUN curl -OLs https://github.com/GoogleCloudPlatform/kms-integrations/releases/download/v1.1/libkmsp11-1.1-linux-amd64.tar.gz \
+    && tar -xf libkmsp11-1.1-linux-amd64.tar.gz \
+    && rm libkmsp11-1.1-linux-amd64.tar.gz
 
-RUN apt-get update && apt-get install -y \
+FROM debian:bullseye-slim
+
+ARG WORKDIR=/root/google-kms
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NOWARNINGS="yes"
+RUN apt-get update -qqy && apt-get install -qqy \
     libengine-pkcs11-openssl \
-    wget \
-    nano \
+    curl nano gettext-base \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget https://github.com/GoogleCloudPlatform/kms-integrations/releases/download/v1.1/libkmsp11-1.1-linux-amd64.tar.gz && \
-    tar -xf libkmsp11-1.1-linux-amd64.tar.gz && \
-    rm libkmsp11-1.1-linux-amd64.tar.gz
+COPY --from=libkmsp11 /usr/lib/libkmsp11-1.1-linux-amd64 /usr/lib/libkmsp11-1.1-linux-amd64
+ENV PKCS11_MODULE_PATH="/usr/lib/libkmsp11-1.1-linux-amd64/libkmsp11.so"
 
-ENV PKCS11_MODULE_PATH="/opt/google-kms/libkmsp11-1.1-linux-amd64/libkmsp11.so"
+WORKDIR $WORKDIR
 
-WORKDIR /root/google-kms
-
-ENTRYPOINT ["/bin/bash", "-c", "-l"]
-CMD ["echo need help?"]
+VOLUME ["/root/.kms", "$WORKDIR"]

@@ -1,15 +1,32 @@
 # Prerequisites
-- docker
-- docker-compose
+To run this image you have to provide the following configuration:
+* Google service account credentials with permissions to work with KMS (see [Permissions and roles](https://cloud.google.com/kms/docs/reference/permissions-and-roles))
+  - Credential JSON file
+  - `GOOGLE_APPLICATION_CREDENTIALS` environment variable should point to this file inside container
+* PKCS11 KMS library config
+  - libengine-pkcs11-openssl library [config file](https://cloud.google.com/kms/docs/reference/pkcs11-openssl#pkcs_11_library_configuration)
+  - `KMS_PKCS11_CONFIG` environment variable should point to this file
 
-# Configuration
-- configure keyring locations in `pkcs11-config.yaml`. see https://cloud.google.com/kms/docs/reference/pkcs11-openssl#pkcs_11_library_configuration
-- configure your google application credentials file path in `.env` file
-- put any files into `workdir`. it will be mounted as  `/root/google-kms` inside container.
 
-# Running
-- OSX/LINUX: `./run.sh`
-- WINDOWS: `run.bat`
+## Usage
+
+Example running configured container
+```
+docker run \
+-v `pwd`/google-credentials.json:/root/.kms/google-credentials.json:ro \
+-e GOOGLE_APPLICATION_CREDENTIALS=/root/.kms/google-credentials.json \
+-v `pwd`/pkcs11-config.yaml:/root/.kms/pkcs11-config.yaml \
+-e KMS_PKCS11_CONFIG=/root/.kms/pkcs11-config.yaml \
+-it openssl-gcp-kms:latest \
+/bin/bash
+```
+
+Alternately you can run this image using docker-compose:
+* ```git clone https://github.com/ydanneg/docker-openssl-gcp-kms.git```
+* ```cd docker-openssl-gcp-kms```
+* Configure file paths in `.env` file
+* `./run.sh`
+
 
 # References
 - https://cloud.google.com/security-key-management
