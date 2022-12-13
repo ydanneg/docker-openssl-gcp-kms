@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim AS libkmsp11
+FROM debian:bookworm-slim AS libkmsp11
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NOWARNINGS="yes"
 RUN apt-get update -qqy && apt-get install -qqy curl
@@ -7,7 +7,7 @@ RUN curl -OLs https://github.com/GoogleCloudPlatform/kms-integrations/releases/d
     && tar -xf libkmsp11-1.1-linux-amd64.tar.gz \
     && rm libkmsp11-1.1-linux-amd64.tar.gz
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 ARG WORKDIR=/root/google-kms
 
